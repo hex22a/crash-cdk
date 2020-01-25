@@ -35,6 +35,9 @@ The tool will prompt for an IAM credentials. Fill in ones, created before.
 ## Deploy that bitch!
 
 ```bash
+## Actually you need to clone this repo first, and install all deps
+git clone https://github.com/hex22a/crash-cdk.git && cd ./crash-cdk && npm i
+
 npm run cdk deploy
 ```
 
