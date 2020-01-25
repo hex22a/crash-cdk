@@ -87,7 +87,7 @@ Download client app if you haven't yet
 
 Click `Yourself (autologin profile)` to download `client.ovpn` file. Use this file to establish your custom VPN connection.
 
-## Destroy
+## 🚨 Destroy
 
 ```bash
 npm run cdk destroy
