@@ -1,8 +1,8 @@
-import cdk = require('@aws-cdk/core');
+import core = require('@aws-cdk/core');
 import ec2 = require('@aws-cdk/aws-ec2');
 
-export class CrashCdkStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+export class CrashCdkStack extends core.Stack {
+  constructor(scope: core.Construct, id: string, props?: core.StackProps) {
     super(scope, id, props);
 
     const Ubuntu18 = 'ami-07d0cf3af28718ef8';
@@ -60,7 +60,14 @@ export class CrashCdkStack extends cdk.Stack {
       imageId: Ubuntu18,
       instanceType: 't2.micro',
       monitoring: false,
-      securityGroupIds: [securityGroup.attrGroupId]
+      keyName: process.env.SSH_KEY_NAME || 'crash',
+      securityGroupIds: [securityGroup.attrGroupId],
+      tags: [
+          {
+            key: 'Name',
+            value: 'VPN',
+          },
+      ]
     });
   }
 }
