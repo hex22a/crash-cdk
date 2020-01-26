@@ -1,8 +1,12 @@
 # Crash CDK
 
-🏗 CDK App for [Amazon CDK](https://docs.aws.amazon.com/cdk/latest/guide/home.html)
+🏗 CDK App for [Amazon CDK](https://docs.aws.amazon.com/cdk/latest/guide/home.html)! Lets you create your own VPN server in few simple steps. 
 
 💸 Suits for [AWS Free Tier](https://aws.amazon.com/free/) instances __(testing)__
+
+☀️ Fast, but verbose setup
+
+👯‍ Mostly copy-pasting 
 
 💥 Easy to destroy
 
@@ -93,7 +97,24 @@ Click `Yourself (autologin profile)` to download `client.ovpn` file. Use this fi
 npm run cdk destroy
 ```
 
-# Useful commands
+## Notes
+
+```
+Unrecognized option or missing or extra parameter(s) in configuration: (line 4): dhcp-pre-release (2.4.4)
+``` 
+
+If you're configuring WiFi router with `.ovpn` autologin profile like above, try adding following lines to the `.ovpn` file in your favorite text editor
+
+```
+## Add this right after comments block, just for better arrangemnt
+pull-filter ignore "dhcp-pre-release"
+pull-filter ignore "dhcp-renew"
+pull-filter ignore "dhcp-release"
+pull-filter ignore "register-dns"
+pull-filter ignore "block-ipv6"
+```
+
+## Useful commands
 
  * `npm run build`   compile typescript to js
  * `npm run watch`   watch for changes and compile
