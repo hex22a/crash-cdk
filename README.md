@@ -2,7 +2,7 @@
 
 🏗 CDK App for [Amazon CDK](https://docs.aws.amazon.com/cdk/latest/guide/home.html)! Lets you create your own VPN server in few simple steps. 
 
-💸 Suits for [AWS Free Tier](https://aws.amazon.com/free/) instances __(testing)__
+💸 Suits for [AWS Free Tier](https://aws.amazon.com/free/) instances
 
 ☀️ Fast, but verbose setup
 
