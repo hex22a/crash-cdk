@@ -1,3 +1,6 @@
+import { readFileSync } from 'fs';
+import { Base64 } from 'js-base64';
+
 import core = require('@aws-cdk/core');
 import ec2 = require('@aws-cdk/aws-ec2');
 
@@ -5,7 +8,7 @@ export class CrashCdkStack extends core.Stack {
   constructor(scope: core.Construct, id: string, props?: core.StackProps) {
     super(scope, id, props);
 
-    const Ubuntu18 = 'ami-07d0cf3af28718ef8';
+    const Ubuntu18 = 'ami-085925f297f89fce1';
     const everyone = "0.0.0.0/0";
     const everyoneV6 = "::/0";
 
@@ -56,11 +59,13 @@ export class CrashCdkStack extends core.Stack {
       ]
     });
 
+    const startupScript = readFileSync('./lib/startup.sh');
+
     new ec2.CfnInstance(this, 'UbuntuVPN', {
       imageId: Ubuntu18,
       instanceType: 't2.micro',
       monitoring: false,
-      keyName: process.env.SSH_KEY_NAME || 'crash',
+      userData: Base64.encode(startupScript.toString()),
       securityGroupIds: [securityGroup.attrGroupId],
       tags: [
           {
