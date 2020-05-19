@@ -59,7 +59,7 @@ git clone https://github.com/hex22a/crash-cdk.git && cd ./crash-cdk && yarn inst
 yarn cdk deploy
 ```
 
-Go to EC2 Dashboard and copy *instance id* and then SSH to the instance 🔑
+Go to [EC2 Dashboard](https://console.aws.amazon.com/ec2/v2/home#Home:) and copy *instance id* and then SSH to the instance 🔑
 
 ```bash
 mssh ubuntu@INSTANCE_ID
