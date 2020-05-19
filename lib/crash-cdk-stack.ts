@@ -59,13 +59,13 @@ export class CrashCdkStack extends core.Stack {
       ]
     });
 
-    const startupScript = readFileSync('./lib/startup.sh');
+    const startupScript = readFileSync('./lib/startup.sh').toString();
 
     new ec2.CfnInstance(this, 'UbuntuVPN', {
       imageId: Ubuntu18,
       instanceType: 't2.micro',
       monitoring: false,
-      userData: Base64.encode(startupScript.toString()),
+      userData: Base64.encode(startupScript),
       securityGroupIds: [securityGroup.attrGroupId],
       tags: [
           {
