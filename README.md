@@ -15,18 +15,32 @@
 🚜 Latest node.js
 
 ```bash
-nvm use 13
+nvm use 14
+```
+
+🧶 [Yarn](https://yarnpkg.com/)
+
+```bash
+npm install -g yarn
 ```
 
 🧾 [AWS](https://aws.amazon.com/) Account
 
-🔑 EC2 Key (SSH) named `crash.pem` (actually you can use any other name but this name is assumed as default)
+🚜 [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
 
-🤖 IAM User with following policies:
+🔌 [EC2 Instance Connect CLI](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-connect-set-up.html#ec2-instance-connect-install-eic-CLI)
 
-1. [AmazonEC2FullAccess](https://console.aws.amazon.com/iam/home?region=us-east-1#/policies/arn:aws:iam::aws:policy/AmazonEC2FullAccess$serviceLevelSummary)
+🤖 [IAM User](https://console.aws.amazon.com/iam/home#/users) with following policies:
 
-2. [AWSCloudFormationFullAccess](https://console.aws.amazon.com/iam/home?region=us-east-1#/policies/arn:aws:iam::aws:policy/AWSCloudFormationFullAccess$serviceLevelSummary)
+1. [AmazonEC2FullAccess](https://console.aws.amazon.com/iam/home#/policies/arn:aws:iam::aws:policy/AmazonEC2FullAccess$serviceLevelSummary)
+
+2. [AWSCloudFormationFullAccess](https://console.aws.amazon.com/iam/home#/policies/arn:aws:iam::aws:policy/AWSCloudFormationFullAccess$serviceLevelSummary)
+
+3. [EC2InstanceConnect](https://console.aws.amazon.com/iam/home#/policies/arn:aws:iam::aws:policy/EC2InstanceConnect$serviceLevelSummary)
+
+💭 *Important*: Create a separate user instead of using default sudo-level access.
+
+💭 *Important 2*: Best practice is to attach permissions to a [group](https://console.aws.amazon.com/iam/home#/groups) and then add users to that group, rather than giving permissions to user directly. In this particular case there's not much difference, so you can do either.  
 
 ## Configure AWS CLI
 
@@ -40,36 +54,23 @@ The tool will prompt for an IAM credentials. Fill in ones, created before.
 
 ```bash
 ## Actually you need to clone this repo first, and install all deps
-git clone https://github.com/hex22a/crash-cdk.git && cd ./crash-cdk && npm i
+git clone https://github.com/hex22a/crash-cdk.git && cd ./crash-cdk && yarn install
 
-npm run cdk deploy
+yarn cdk deploy
 ```
 
-Then SSH to the newly created machine using `crash.pem` key 🔑
+Go to EC2 Dashboard and copy *instance id* and then SSH to the instance 🔑
 
 ```bash
-ssh -i crash.pem ubuntu@INSTANCE_IP
-```
-
-Install [OpenVPN Access Server](https://openvpn.net/download-open-vpn/) for Ubuntu. OpenVPN AS Supports up to 2 VPN users for free.
-
-```bash
-## Login as root
-sudo su
-```
-
-```bash
-## Install OpenVPN AS
-apt update && apt -y install ca-certificates wget net-tools
-wget -qO - https://as-repository.openvpn.net/as-repo-public.gpg | apt-key add -
-echo "deb http://as-repository.openvpn.net/as/debian bionic main">/etc/apt/sources.list.d/openvpn-as-repo.list
-apt update && apt -y install openvpn-as
+mssh ubuntu@INSTANCE_ID
 ```
 
 ```bash
 # Set default user password
 passwd openvpn
 ```
+
+Instance configuration is complete 🎉
 
 ## Set up VPN
 
@@ -114,10 +115,3 @@ pull-filter ignore "register-dns"
 pull-filter ignore "block-ipv6"
 ```
 
-## Useful commands
-
- * `npm run build`   compile typescript to js
- * `npm run watch`   watch for changes and compile
- * `npm run cdk deploy`      deploy this stack to your default AWS account/region
- * `npm run cdk diff`        compare deployed stack with current state
- * `npm run cdk synth`       emits the synthesized CloudFormation template
