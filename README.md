@@ -38,9 +38,9 @@ npm install -g yarn
 
 3. [EC2InstanceConnect](https://console.aws.amazon.com/iam/home#/policies/arn:aws:iam::aws:policy/EC2InstanceConnect$serviceLevelSummary)
 
-💭 *Important*: Create a separate user instead of using default sudo-level access.
+💭 **Important**: Create a separate user instead of using default sudo-level access.
 
-💭 *Important 2*: Best practice is to attach permissions to a [group](https://console.aws.amazon.com/iam/home#/groups) and then add users to that group, rather than giving permissions to user directly. In this particular case there's not much difference, so you can do either.  
+💭 **Important 2**: Best practice is to attach permissions to a [group](https://console.aws.amazon.com/iam/home#/groups) and then add users to that group, rather than giving permissions to user directly. In this particular case there's not much difference, so you can do either.  
 
 ## Configure AWS CLI
 
@@ -50,7 +50,7 @@ aws configure
 
 The tool will prompt for an IAM credentials. Fill in ones, created before.
 
-## Deploy that bitch!
+## Deploy
 
 ```bash
 ## Actually you need to clone this repo first, and install all deps
@@ -67,7 +67,7 @@ mssh ubuntu@INSTANCE_ID
 
 ```bash
 # Set default user password
-passwd openvpn
+sudo passwd openvpn
 ```
 
 Instance configuration is complete 🎉
