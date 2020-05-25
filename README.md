@@ -86,7 +86,7 @@ __Don't forget to "Update Running Server"__
 
 ### Client
 
-Login a 👩‍💻 VPN user https://INSTANCE_IT:943/?src=connect
+Login as a 👩‍💻 VPN user [https://INSTANCE_IT:943/?src=connect]
 
 Download client app if you haven't yet
 
