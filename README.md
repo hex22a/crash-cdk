@@ -76,9 +76,9 @@ Instance configuration is complete 🎉
 
 ### Server
 
-Log in as  `openvpn` user at `https://INSTANCE_IP:943/admin`. Ignore SSL warning, or add SSL Cert as trusted to the keychain.
+Log in as  `openvpn` user at `https://PUBLIC_IP:943/admin`. Ignore SSL warning, or add SSL Cert as trusted to the keychain. You can find your public ip in [AWS Console](https://console.aws.amazon.com/). To bypass Google Chrome's "Not Secure" warning, just type in "thisisunsafe" while the tab is open. 
 
-Update __Hostname or IP Address__ at __Network Settings__ (e.g. https://INSTANCE_IP:943/admin/network_settings) it should also match INSTANCE_IP
+Update __Hostname or IP Address__ at __Network Settings__ (https://PUBLIC_IP:943/admin/network_settings). Value in the field should be your PUBLIC_IP.
 
 Create 👩‍💻 VPN users, click "More Settings" to set password, enable auto-login
 
@@ -86,7 +86,7 @@ __Don't forget to "Update Running Server"__
 
 ### Client
 
-Login as a 👩‍💻 VPN user [https://INSTANCE_IT:943/?src=connect](https://INSTANCE_IT:943/?src=connect)
+Login as a 👩‍💻 VPN user [https://PUBLIC_IP:943/?src=connect](https://PUBLIC_IP:943/?src=connect)
 
 Download client app if you haven't yet
 
