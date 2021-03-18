@@ -3,7 +3,7 @@ import * as route53 from '@aws-cdk/aws-route53';
 import core = require('@aws-cdk/core');
 import ec2 = require('@aws-cdk/aws-ec2');
 
-export class PasswordManagetStack extends core.Stack {
+export class PasswordManagerStack extends core.Stack {
     constructor(scope: core.Construct, id: string, props?: core.StackProps) {
         super(scope, id, props);
         const vpc_private_net = '10.0.0.0/16';
