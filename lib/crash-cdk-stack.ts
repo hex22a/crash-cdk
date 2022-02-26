@@ -1,78 +1,61 @@
 import { readFileSync } from 'fs';
 import { Base64 } from 'js-base64';
 
-import core = require('@aws-cdk/core');
-import ec2 = require('@aws-cdk/aws-ec2');
+import * as cdk from 'aws-cdk-lib';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
-export class CrashCdkStack extends core.Stack {
-  constructor(scope: core.Construct, id: string, props?: core.StackProps) {
+import { Construct } from 'constructs';
+
+export class CrashCdkStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const Ubuntu18 = 'ami-085925f297f89fce1';
-    const everyone = "0.0.0.0/0";
-    const everyoneV6 = "::/0";
+    const Ubuntu20 = 'ami-04505e74c0741db8d';
 
-    const httpsTraffic = {
-      cidrIp: everyone,
-      fromPort: 443,
-      ipProtocol: "TCP",
-      toPort: 443
-    };
+    const vpc = new ec2.Vpc(this, 'TheVPC', {
+      maxAzs: 1,
+      natGateways: 0,
+      subnetConfiguration: [{
+        cidrMask: 24,
+        name: "asterisk",
+        subnetType: ec2.SubnetType.PUBLIC
+      }]
+    })
 
-    const customHttpsTraffic = {
-      cidrIp: everyone,
-      fromPort: 943,
-      ipProtocol: "TCP",
-      toPort: 943
-    };
-
-    const sshTraffic = {
-      cidrIp: everyone,
-      fromPort: 22,
-      ipProtocol: "TCP",
-      toPort: 22
-    };
-
-    const vpnTcpTraffic = {
-      cidrIp: everyone,
-      fromPort: 1199,
-      ipProtocol: "TCP",
-      toPort: 1199
-    };
-
-    const vpnUdpTraffic = {
-      cidrIp: everyone,
-      fromPort: 1194,
-      ipProtocol: "udp",
-      toPort: 1194
-    };
-
-    const securityGroup = new ec2.CfnSecurityGroup(this, 'vpn_sg', {
-      groupName: 'vpn_sg',
-      groupDescription: 'Allows TCP traffic for VPN connection',
-      securityGroupIngress: [
-        httpsTraffic,
-        customHttpsTraffic,
-        sshTraffic,
-        vpnTcpTraffic,
-        vpnUdpTraffic
-      ]
+    const securityGroup = new ec2.SecurityGroup(this, 'vpn_sg', {
+      vpc: vpc,
+      securityGroupName: 'vpn_sg',
+      description: 'Allows TCP traffic for VPN connection'
     });
+
+    securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(443));
+    securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(943));
+    securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22));
+    securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(1199));
+    securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.udp(1194));
 
     const startupScript = readFileSync('./lib/startup.sh').toString();
 
-    new ec2.CfnInstance(this, 'UbuntuVPN', {
-      imageId: Ubuntu18,
-      instanceType: 't2.micro',
-      monitoring: false,
-      userData: Base64.encode(startupScript),
-      securityGroupIds: [securityGroup.attrGroupId],
-      tags: [
-          {
-            key: 'Name',
-            value: 'VPN',
-          },
-      ]
+    const userData = ec2.UserData.forLinux();
+
+    userData.addCommands(startupScript);
+
+    const image = new ec2.GenericLinuxImage({
+      'us-east-1': Ubuntu20,
     });
+
+    const instance = new ec2.Instance(this, 'UbuntuVPN', {
+      vpc: vpc,
+      machineImage: image,
+      instanceType: new ec2.InstanceType('t2.micro'),
+      userData: userData,
+      securityGroup: securityGroup,
+      instanceName: 'VPN',
+    });
+
+    new cdk.CfnOutput(this, 'IP Address', { value: instance.instancePublicIp });
+    // new cdk.CfnOutput(this, 'Key Name', { value: key.keyPairName })
+    new cdk.CfnOutput(this, 'Download Key Command', { value: 'aws secretsmanager get-secret-value --secret-id ec2-ssh-key/cdk-keypair/private --query SecretString --output text > cdk-key.pem && chmod 400 cdk-key.pem' })
+    new cdk.CfnOutput(this, 'ssh command', { value: 'ssh -i cdk-key.pem -o IdentitiesOnly=yes ec2-user@' + instance.instancePublicIp })
   }
 }
