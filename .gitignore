@@ -6,6 +6,13 @@ node_modules
 .cdk.staging
 cdk.out
 .idea
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 # keys
 *.pem
