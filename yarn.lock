@@ -2114,7 +2114,7 @@ __metadata:
     aws-cdk-lib: ^2.14.0
     constructs: ^10.0.73
     jest: ^27.5.1
-    js-base64: ^3.7.2
+    js-base64: ^3.7.5
     source-map-support: ^0.5.21
     ts-jest: ^27.1.3
     ts-node: ^10.5.0
@@ -3413,10 +3413,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-base64@npm:*, js-base64@npm:^3.7.2":
+"js-base64@npm:*":
   version: 3.7.2
   resolution: "js-base64@npm:3.7.2"
   checksum: 573f28e9a27c3df60096d4d3f551bcb4fcb6d49161cf83396e9bad9b76f94736a70bb70b8808fe834dff2a388f76604ba09d6e153bbf181646e407720139fa5b
+  languageName: node
+  linkType: hard
+
+"js-base64@npm:^3.7.5":
+  version: 3.7.5
+  resolution: "js-base64@npm:3.7.5"
+  checksum: 67a78c8b1c47b73f1c6fba1957e9fe6fd9dc78ac93ac46cc2e43472dcb9cf150d126fb0e593192e88e0497354fa634d17d255add7cc6ee3c7b4d29870faa8e18
   languageName: node
   linkType: hard
 
@@ -4720,7 +4727,7 @@ __metadata:
 
 "typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>":
   version: 4.5.5
-  resolution: "typescript@patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=bda367"
+  resolution: "typescript@patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=701156"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
